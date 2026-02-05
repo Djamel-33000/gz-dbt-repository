@@ -25,6 +25,22 @@ sources:
         identifier: raw_gz_sales
         description: table des ventes 
         columns:
+        # (Optionnel) Config pour la freshness -> on s'assure que les données sont aussi récentes que prévu
+        config:
+          # La commande 'dbt source freshness' attend souvent un TIMESTAMP.
+          # On cast la DATE en TIMESTAMP pour que ça fonctionne
+          loaded_at_field: "CAST(date_date AS TIMESTAMP)"
+          
+          freshness:
+            # Niveau 1 : Avertissement (Le pipeline continue, mais on reçoit un warning / une alerte)
+            warn_after:
+              count: 1
+              period: day
+            # Niveau 2 : Erreur Critique (Le pipeline s'arrête pour éviter tout problème)
+            error_after:
+              count: 3
+              period: day
+        columns:
 
           - name: date_date
             description: date de la vente 
