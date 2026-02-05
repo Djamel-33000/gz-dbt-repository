@@ -23,6 +23,7 @@ sources:
         identifier: raw_gz_sales
         description: table des ventes 
         columns:
+
           - name: date_date
             description: date de la vente 
           - name: orders_id

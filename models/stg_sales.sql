@@ -1,8 +1,9 @@
 SELECT
-    -- On crée la clé unique ici (concaténation simple ou avec dbt_utils)
-    CONCAT(orders_id, '_', product_id) AS sales_id,
+    -- On combine orders_id et pdt_id (et non product_id)
+    CONCAT(orders_id, '_', pdt_id) AS sales_id,
+    date_date,
     orders_id,
-    product_id,
+    pdt_id,
     revenue,
     quantity
 FROM {{ source('raw', 'vente') }}
