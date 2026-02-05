@@ -1,10 +1,10 @@
-- name: int_orders_margin
-    description: "Agrégation de la marge au niveau de la commande (orders_id)"
-    columns:
-      - name: orders_id
-        tests:
-          - unique
-          - not_null
-      - name: margin
-        description: "Somme des marges de tous les produits de la commande"
+SELECT
+  orders_id,
+  date_date,
+  ROUND(SUM(CAST(revenue AS FLOAT64)),2) as revenue,
+  ROUND(SUM(CAST(quantity AS FLOAT64)),2) as quantity,
+  ROUND(SUM(CAST(purchase_cost AS FLOAT64)),2) as purchase_cost,
+  ROUND(SUM(CAST(margin AS FLOAT64)),2) as margin
+FROM {{ ref("int_sales_margin") }}
+GROUP BY orders_id,date_date
 

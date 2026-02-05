@@ -6,82 +6,41 @@ sources:
     database: lewagon-485210
     schema: gz_raw_data
     description: "dataset de notre gz_raw_data"
-    freshness:
-       warn_after: {count: 90, period: day}
-    tables:
+    config:
+     freshness:
+      warn_after: {count: 90, period: day}
+    tables: # <--- C'est ici que tout doit commencer
       - name: produit
-        identifier : raw_gz_product
+        identifier: raw_gz_product
         description: liste des produits 
         columns:
           - name: products_id
-            description: identifiant du produit
             tests:
-             - not_null
-             - unique
-          - name: purchSE_PRICE
-            description: prix d'achat 
-                     
+              - not_null
+              - unique
+
       - name: vente
         identifier: raw_gz_sales
-        description: table des ventes 
-        columns:
-        # (Optionnel) Config pour la freshness -> on s'assure que les données sont aussi récentes que prévu
         config:
-          # La commande 'dbt source freshness' attend souvent un TIMESTAMP.
-          # On cast la DATE en TIMESTAMP pour que ça fonctionne
           loaded_at_field: "CAST(date_date AS TIMESTAMP)"
-          
           freshness:
-            # Niveau 1 : Avertissement (Le pipeline continue, mais on reçoit un warning / une alerte)
-            warn_after:
-              count: 1
-              period: day
-            # Niveau 2 : Erreur Critique (Le pipeline s'arrête pour éviter tout problème)
-            error_after:
-              count: 3
-              period: day
+            warn_after: {count: 1, period: day}
+            error_after: {count: 3, period: day}
         columns:
-
           - name: date_date
-            description: date de la vente 
           - name: orders_id
-            description: identifiant de la vente
           - name: pdt_id
-            description: identifiant du produit
-          - name: revenue
-            description: chiffre d'affaire 
-          - name: quantity
-            description: la quantité
+
       - name: livraison
         identifier: raw_gz_ship
         description: table des expeditions
         columns: 
-            - name: orders_id
-              description: identifiant de la vente
-              tests:
-               - not_null
-               - unique
-            - name: shipping_fee
-              description: frais de livraison 
-            - name: shipping_fee_1
-              description: frais de livraison 1 
-            - name: logCost
-              description: frais logistique
-            - name: ship_cost
-              description: cout de livraison
+          - name: orders_id
+            tests:
+              - not_null
+              - unique
 
-  # ----------------------------------------------------------------------------
-  # B. Modèles Intermédiaires (calculs / aggrégations / jointures nécessaires)
-  # ----------------------------------------------------------------------------
-  
-  - name: int_sales_margin
-    description: "Calcul de la marge ligne à ligne (avec Sales et Product)."
-    columns:
-      - name: margin
-        description: "Revenue - Purchase Cost"
-      - name: purchase_cost
-        description: "Coût d'achat (quantité * prix d'achat)"
-
+models:
   - name: int_orders_margin
     description: "Agrégation de la marge au niveau de la commande (orders_id)"
     columns:
@@ -98,6 +57,11 @@ sources:
       - name: orders_id
         tests:
           - unique
-          - not_null              
+          - not_null               
       - name: operational_margin
-        description: "Marge + shipping fee - (log cost + ship cost)"
+
+  - name: int_sales_margin
+    description: "Calcul de la marge ligne à ligne"
+    columns:
+      - name: margin
+      - name: purchase_cost
