@@ -1,0 +1,46 @@
+
+version: 2
+
+sources:
+  - name: raw
+    database: lewagon-485210
+    schema: gz_raw_data
+    description: "dataset de notre gz_raw_data"
+    tables:
+      - name: produit
+        identifier : raw_gz_product
+        description: liste des produits 
+        columns:
+          - name: products_id
+            description: identifiant du produit
+          - name: purchSE_PRICE
+            description: prix d'achat 
+                     
+      - name: vente
+        identifier: raw_gz_sales
+        description: table des ventes 
+        columns:
+          - name: date_date
+            description: date de la vente 
+          - name: orders_id
+            description: identifiant de la vente
+          - name: pdt_id
+            description: identifiant du produit
+          - name: revenue
+            description: chiffre d'affaire 
+          - name: quantity
+            description: la quantité
+      - name: livraison
+        identifier: raw_gz_ship
+        description: table des expeditions
+        columns: 
+            - name: orders_id
+              description: identifiant de la vente
+            - name: shipping_fee
+              description: frais de livraison 
+            - name: shipping_fee_1
+              description: frais de livraison 1 
+            - name: logCost
+              description: frais logistique
+            - name: ship_cost
+              description: cout de livraison
