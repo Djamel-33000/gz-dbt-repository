@@ -69,3 +69,35 @@ sources:
               description: frais logistique
             - name: ship_cost
               description: cout de livraison
+
+  # ----------------------------------------------------------------------------
+  # B. Modèles Intermédiaires (calculs / aggrégations / jointures nécessaires)
+  # ----------------------------------------------------------------------------
+  
+  - name: int_sales_margin
+    description: "Calcul de la marge ligne à ligne (avec Sales et Product)."
+    columns:
+      - name: margin
+        description: "Revenue - Purchase Cost"
+      - name: purchase_cost
+        description: "Coût d'achat (quantité * prix d'achat)"
+
+  - name: int_orders_margin
+    description: "Agrégation de la marge au niveau de la commande (orders_id)"
+    columns:
+      - name: orders_id
+        tests:
+          - unique
+          - not_null
+      - name: margin
+        description: "Somme des marges de tous les produits de la commande"
+
+  - name: int_orders_operational
+    description: "Marge opérationnelle (marge - coûts logistiques)"
+    columns:
+      - name: orders_id
+        tests:
+          - unique
+          - not_null              
+      - name: operational_margin
+        description: "Marge + shipping fee - (log cost + ship cost)"
