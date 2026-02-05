@@ -13,6 +13,9 @@ sources:
         columns:
           - name: products_id
             description: identifiant du produit
+            tests:
+             - not_null
+             - unique
           - name: purchSE_PRICE
             description: prix d'achat 
                      
@@ -36,6 +39,9 @@ sources:
         columns: 
             - name: orders_id
               description: identifiant de la vente
+              tests:
+               - not_null
+               - unique
             - name: shipping_fee
               description: frais de livraison 
             - name: shipping_fee_1
