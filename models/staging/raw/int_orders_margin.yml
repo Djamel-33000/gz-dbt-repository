@@ -1,0 +1,16 @@
+  
+version: 2
+
+models:
+  - name: int_orders_margin
+    description: "Agrégation de la marge au niveau de la commande (orders_id)"
+    columns:
+      - name: orders_id
+        description: "Identifiant unique de la commande"
+        tests:
+          - unique
+          - not_null
+      - name: margin
+        description: "Somme des marges de tous les produits de la commande"
+      - name: revenue
+        description: "Chiffre d'affaires total de la commande"
