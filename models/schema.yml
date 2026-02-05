@@ -6,6 +6,8 @@ sources:
     database: lewagon-485210
     schema: gz_raw_data
     description: "dataset de notre gz_raw_data"
+    freshness:
+       warn_after: {count: 90, period: day}
     tables:
       - name: produit
         identifier : raw_gz_product
