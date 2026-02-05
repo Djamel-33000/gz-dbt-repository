@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: int_sales_margin
+    description: "Calcul de la marge par produit et par vente"
+    columns:
+      - name: margin
+        description: "Revenue - Purchase Cost"
+
+  - name: int_orders_margin
+    description: "Agrégation de la marge par commande (orders_id)"
+    columns:
+      - name: orders_id
+        tests:
+          - unique
+          - not_null
+
+  - name: int_orders_operational
+    description: "Calcul de la marge opérationnelle (Marge - Logistique - Expédition)"
+    columns:
+      - name: orders_id
+        tests:
+          - unique
+          - not_null
+      - name: operational_margin
+        description: "Margin + Shipping Fee - Logcost - Ship Cost"
