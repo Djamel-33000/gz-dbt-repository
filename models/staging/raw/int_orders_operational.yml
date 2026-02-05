@@ -1,0 +1,13 @@
+version: 2
+
+models:
+
+  - name: int_orders_operational
+    description: "Marge opérationnelle (marge - coûts logistiques)"
+    columns:
+      - name: orders_id
+        tests:
+          - unique
+          - not_null              
+      - name: operational_margin
+        description: "Marge + shipping fee - (log cost + ship cost)"
